@@ -1,5 +1,6 @@
 package com.codewyrm.logitrack.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
 public class MaintenanceTask {
     @Id
     private UUID id;

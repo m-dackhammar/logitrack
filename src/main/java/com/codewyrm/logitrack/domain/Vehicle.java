@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+@Entity
 public class Vehicle {
     @Id
     private UUID id;
