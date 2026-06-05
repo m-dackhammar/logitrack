@@ -2,11 +2,15 @@ package com.codewyrm.logitrack.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
+
+import java.util.UUID;
 
 @Entity
+@Getter
 public class Driver {
     @Id
-    private Long id;
+    private UUID id;
     private String employeeId;
     private String firstName;
     private String lastName;
@@ -14,31 +18,11 @@ public class Driver {
 
     public Driver() {}
 
-    public Driver(Long id, String employeeId, String firstName, String lastName, String licenseNumber) {
-        this.id = id;
+    public Driver(String employeeId, String firstName, String lastName, String licenseNumber) {
+        this.id = UUID.randomUUID();
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.licenseNumber = licenseNumber;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getLicenseNumber() {
-        return licenseNumber;
     }
 }
