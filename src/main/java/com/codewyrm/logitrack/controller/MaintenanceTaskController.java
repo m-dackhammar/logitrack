@@ -3,6 +3,7 @@ package com.codewyrm.logitrack.controller;
 import com.codewyrm.logitrack.dto.create.MaintenanceTaskCreateDTO;
 import com.codewyrm.logitrack.dto.response.MaintenanceTaskResponseDTO;
 import com.codewyrm.logitrack.service.MaintenanceTaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class MaintenanceTaskController {
     }
 
     @PostMapping
-    public ResponseEntity<MaintenanceTaskResponseDTO> scheduleMaintentance(@RequestBody MaintenanceTaskCreateDTO createDTO) {
+    public ResponseEntity<MaintenanceTaskResponseDTO> scheduleMaintentance(@Valid @RequestBody MaintenanceTaskCreateDTO createDTO) {
         MaintenanceTaskResponseDTO responseDTO = maintenanceTaskService.scheduleMaintenance(createDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
