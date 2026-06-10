@@ -1,6 +1,5 @@
-package com.codewyrm.logitrack.dto;
+package com.codewyrm.logitrack.dto.response;
 
-import com.codewyrm.logitrack.domain.Driver;
 import com.codewyrm.logitrack.domain.Vehicle;
 
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package com.codewyrm.logitrack.controller;
 
-import com.codewyrm.logitrack.dto.MaintenanceTaskCreateDTO;
-import com.codewyrm.logitrack.dto.MaintenanceTaskResponseDTO;
+import com.codewyrm.logitrack.dto.create.MaintenanceTaskCreateDTO;
+import com.codewyrm.logitrack.dto.response.MaintenanceTaskResponseDTO;
 import com.codewyrm.logitrack.service.MaintenanceTaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

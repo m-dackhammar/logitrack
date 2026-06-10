@@ -1,6 +1,5 @@
-package com.codewyrm.logitrack.dto;
+package com.codewyrm.logitrack.dto.create;
 
-import com.codewyrm.logitrack.domain.Driver;
 import com.codewyrm.logitrack.domain.MaintenanceTask;
 import com.codewyrm.logitrack.domain.Vehicle;
 

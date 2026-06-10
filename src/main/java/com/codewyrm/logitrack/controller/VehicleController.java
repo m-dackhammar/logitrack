@@ -1,7 +1,7 @@
 package com.codewyrm.logitrack.controller;
 
-import com.codewyrm.logitrack.dto.VehicleCreateDTO;
-import com.codewyrm.logitrack.dto.VehicleResponseDTO;
+import com.codewyrm.logitrack.dto.create.VehicleCreateDTO;
+import com.codewyrm.logitrack.dto.response.VehicleResponseDTO;
 import com.codewyrm.logitrack.service.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.codewyrm.logitrack.dto;
+package com.codewyrm.logitrack.dto.response;
 
 import com.codewyrm.logitrack.domain.Driver;
 
