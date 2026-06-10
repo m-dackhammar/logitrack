@@ -2,10 +2,11 @@ package com.codewyrm.logitrack.service;
 
 import com.codewyrm.logitrack.domain.Driver;
 import com.codewyrm.logitrack.domain.Vehicle;
-import com.codewyrm.logitrack.dto.VehicleCreateDTO;
-import com.codewyrm.logitrack.dto.VehicleResponseDTO;
+import com.codewyrm.logitrack.dto.create.VehicleCreateDTO;
+import com.codewyrm.logitrack.dto.response.VehicleResponseDTO;
 import com.codewyrm.logitrack.repository.DriverRepo;
 import com.codewyrm.logitrack.repository.VehicleRepo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +20,8 @@ public class VehicleService {
     }
 
     public VehicleResponseDTO registerVehicle(VehicleCreateDTO vehicleCreateDTO) {
-        if (!vehicleRepo.existsByLicensePlate(vehicleCreateDTO.licensePlate())) {
-            throw new RuntimeException("Vehicle already exists");
+        if (vehicleRepo.existsByLicensePlate(vehicleCreateDTO.licensePlate())) {
+            throw new IllegalStateException("Vehicle already exists");
         }
         Vehicle vehicle = vehicleCreateDTO.toEntity();
         vehicleRepo.save(vehicle);
@@ -29,20 +30,20 @@ public class VehicleService {
     }
 
     public VehicleResponseDTO getVehicleByPlate(String licensePlate) {
-        Vehicle vehicle = vehicleRepo.findByLicensePlate(licensePlate).orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        Vehicle vehicle = vehicleRepo.findByLicensePlate(licensePlate).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
         return VehicleResponseDTO.fromEntity(vehicle);
     }
 
-    public VehicleResponseDTO assignDriver(String licencePlate, String employeeId) {
-        Vehicle vehicle = vehicleRepo.findByLicensePlate(licencePlate)
-                .orElseThrow(() -> new RuntimeException("Vehicle Not Found"));
+    public VehicleResponseDTO assignDriver(String licensePlate, String employeeId) {
+        Vehicle vehicle = vehicleRepo.findByLicensePlate(licensePlate)
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
 
         Driver driver = driverRepo.findByEmployeeId(employeeId)
-                .orElseThrow(() -> new RuntimeException("Driver Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("Driver Not Found"));
 
-        if (!vehicleRepo.existsByDriver(driver)) {
-            throw new RuntimeException("Driver Already Assigned");
+        if (vehicleRepo.existsByDriver(driver)) {
+            throw new IllegalStateException("Driver Already Assigned");
         }
 
         vehicle.setCurrentDriver(driver);
@@ -51,9 +52,9 @@ public class VehicleService {
         return VehicleResponseDTO.fromEntity(vehicle);
     }
 
-    public VehicleResponseDTO releaseDriver(String licencePlate) {
-        Vehicle vehicle = vehicleRepo.findByLicensePlate(licencePlate)
-                .orElseThrow(() -> new RuntimeException("Vehicle Not Found"));
+    public VehicleResponseDTO releaseDriver(String licensePlate) {
+        Vehicle vehicle = vehicleRepo.findByLicensePlate(licensePlate)
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
 
         vehicle.setCurrentDriver(null);
         vehicleRepo.save(vehicle);

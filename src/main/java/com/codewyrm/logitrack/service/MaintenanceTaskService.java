@@ -2,11 +2,12 @@ package com.codewyrm.logitrack.service;
 
 import com.codewyrm.logitrack.domain.MaintenanceTask;
 import com.codewyrm.logitrack.domain.Vehicle;
-import com.codewyrm.logitrack.dto.MaintenanceTaskCreateDTO;
-import com.codewyrm.logitrack.dto.MaintenanceTaskResponseDTO;
+import com.codewyrm.logitrack.dto.create.MaintenanceTaskCreateDTO;
+import com.codewyrm.logitrack.dto.response.MaintenanceTaskResponseDTO;
 import com.codewyrm.logitrack.repository.DriverRepo;
 import com.codewyrm.logitrack.repository.MaintenanceTaskRepo;
 import com.codewyrm.logitrack.repository.VehicleRepo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,10 +28,10 @@ public class MaintenanceTaskService {
 
     public MaintenanceTaskResponseDTO scheduleMaintenance(MaintenanceTaskCreateDTO maintenanceTaskCreateDTO) {
 
-        Vehicle vehicle =  vehicleRepo.findByLicensePlate(maintenanceTaskCreateDTO.licensePlate()).orElseThrow(() -> new RuntimeException("Vehicle Not Found"));
+        Vehicle vehicle =  vehicleRepo.findByLicensePlate(maintenanceTaskCreateDTO.licensePlate()).orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
 
         if (maintenanceTaskRepo.existsByVehicleAndCompletionDateIsNull(vehicle)) {
-            throw new RuntimeException("Vehicle Already Has an active Maintenance Task");
+            throw new IllegalStateException("Vehicle Already Has an active Maintenance Task");
         }
 
         MaintenanceTask maintenanceTask = maintenanceTaskCreateDTO.toEntity(vehicle);
@@ -40,10 +41,10 @@ public class MaintenanceTaskService {
     }
 
     public MaintenanceTaskResponseDTO completeMaintenanceTask(UUID taskId) {
-        MaintenanceTask maintenanceTask = maintenanceTaskRepo.findById(taskId).orElseThrow(() -> new RuntimeException("Maintenance Task Not Found"));
+        MaintenanceTask maintenanceTask = maintenanceTaskRepo.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Maintenance Task Not Found"));
 
         if (maintenanceTask.getCompletionDate() != null) {
-            throw new RuntimeException("Maintenance Task Already Completed");
+            throw new IllegalStateException("Maintenance Task Already Completed");
         }
 
         maintenanceTask.setCompletionDate(LocalDate.now());
