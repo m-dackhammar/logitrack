@@ -46,7 +46,7 @@ public class VehicleService {
             throw new IllegalStateException("Driver Already Assigned");
         }
 
-        vehicle.setCurrentDriver(driver);
+        vehicle.setDriver(driver);
         vehicleRepo.save(vehicle);
 
         return VehicleResponseDTO.fromEntity(vehicle);
@@ -56,7 +56,7 @@ public class VehicleService {
         Vehicle vehicle = vehicleRepo.findByLicensePlate(licensePlate)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
 
-        vehicle.setCurrentDriver(null);
+        vehicle.setDriver(null);
         vehicleRepo.save(vehicle);
 
         return VehicleResponseDTO.fromEntity(vehicle);

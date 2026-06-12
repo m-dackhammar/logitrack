@@ -17,12 +17,13 @@ public class Vehicle {
     private String model;
 
     @Enumerated(EnumType.STRING)
+    @Setter
     private VehicleStatus vehicleStatus;
 
     @Setter
     @OneToOne
     @JoinColumn(name = "driver_id")
-    private Driver currentDriver;
+    private Driver driver;
 
     protected Vehicle() {}
 
