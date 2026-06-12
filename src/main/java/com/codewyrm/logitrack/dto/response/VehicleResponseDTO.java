@@ -9,7 +9,8 @@ public record VehicleResponseDTO(
     String vin,
     String licensePlate,
     String brand,
-    String model
+    String model,
+    String driverEmployeeId
 ) {
     public static VehicleResponseDTO fromEntity(Vehicle vehicle) {
         return new VehicleResponseDTO(
@@ -17,6 +18,7 @@ public record VehicleResponseDTO(
             vehicle.getVin(),
             vehicle.getLicensePlate(),
             vehicle.getBrand(),
-            vehicle.getModel());
+            vehicle.getModel(),
+            vehicle.getDriver().getEmployeeId());
     }
 }
