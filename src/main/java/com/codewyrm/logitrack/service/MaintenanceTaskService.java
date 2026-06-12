@@ -2,6 +2,7 @@ package com.codewyrm.logitrack.service;
 
 import com.codewyrm.logitrack.domain.MaintenanceTask;
 import com.codewyrm.logitrack.domain.Vehicle;
+import com.codewyrm.logitrack.domain.VehicleStatus;
 import com.codewyrm.logitrack.dto.create.MaintenanceTaskCreateDTO;
 import com.codewyrm.logitrack.dto.response.MaintenanceTaskResponseDTO;
 import com.codewyrm.logitrack.repository.DriverRepo;
@@ -32,6 +33,10 @@ public class MaintenanceTaskService {
 
         if (maintenanceTaskRepo.existsByVehicleAndCompletionDateIsNull(vehicle)) {
             throw new IllegalStateException("Vehicle Already Has an active Maintenance Task");
+        } else {
+            // Lock vehicle as Under Maintenance
+            vehicle.setVehicleStatus(VehicleStatus.UNDER_MAINTENANCE);
+            vehicleRepo.save(vehicle);
         }
 
         MaintenanceTask maintenanceTask = maintenanceTaskCreateDTO.toEntity(vehicle);
@@ -49,6 +54,11 @@ public class MaintenanceTaskService {
 
         maintenanceTask.setCompletionDate(LocalDate.now());
         maintenanceTaskRepo.save(maintenanceTask);
+
+        // Release vehicle
+        Vehicle vehicle = maintenanceTask.getVehicle();
+        vehicle.setVehicleStatus(VehicleStatus.AVAILABLE);
+        vehicleRepo.save(vehicle);
 
         return MaintenanceTaskResponseDTO.fromEntity(maintenanceTask);
     }
